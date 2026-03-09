@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
 
 public class PlayerHit : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class PlayerHit : MonoBehaviour
         {
             Debug.Log("HIT - GAME OVER");
             Time.timeScale = 0f;
+            SceneManager.LoadScene("EndMenu");
         }
         if (hit.collider.CompareTag("Coin"))
         {
