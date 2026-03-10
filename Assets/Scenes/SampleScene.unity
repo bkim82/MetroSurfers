@@ -1777,13 +1777,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   scoreText: {fileID: 1887322923}
   pauseScoreText: {fileID: 0}
-<<<<<<< HEAD
   sfxSource: {fileID: 1201311820}
   coinClip: {fileID: 8300000, guid: d370b33be9d8444068a3b8f5641ab20b, type: 3}
   dogClip: {fileID: 8300000, guid: 0d75d6d328fa442d0afa4f588034cf34, type: 3}
-=======
   coinWall: {fileID: 267724666}
->>>>>>> brandon
 --- !u!114 &1201311815
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -50,65 +50,18 @@ public class PlayerHit : MonoBehaviour
                 sfxSource.PlayOneShot(dogClip);
 
             Debug.Log("Buzz ran into an obstacle");
-            buzzrunner.forwardSpeed = 1f;
             buzzrunner.OnHitObstacle();
         }
 
         if (hit.collider.CompareTag("Coin"))
         {
+            GameObject coin = hit.collider.gameObject;
+
+            if (!coin.activeSelf)
+                return;
+
             if (sfxSource != null && coinClip != null)
                 sfxSource.PlayOneShot(coinClip);
-            hit.collider.gameObject.GetComponent<Collider>().enabled = false;
-            Destroy(hit.collider.gameObject);
-            GameObject coin = hit.collider.gameObject;
-
-            if (!coin.activeSelf)
-                return;
-
-            coin.SetActive(false);
-
-            score++;
-            SetScore();
-
-            Destroy(coin);
-        }
-
-        if (hit.collider.CompareTag("Bulldog"))
-        {
-            Debug.Log("Bulldog caught Buzz");
-            Time.timeScale = 0f;
-            SceneManager.LoadScene("EndMenu");
-        }
-    }
-
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        CoinGate gate = hit.collider.GetComponent<CoinGate>();
-
-        if (gate != null)
-        {
-            if (score >= gate.cost)
-            {
-                score -= gate.cost;
-                SetScore();
-                Destroy(hit.collider.gameObject);
-            }
-
-            return;
-        }
-
-        if (hit.collider.GetComponent<Obstacle>())
-        {
-            Debug.Log("Buzz ran into an obstacle");
-            buzzrunner.OnHitObstacle();
-        }
-
-        if (hit.collider.CompareTag("Coin"))
-        {
-            GameObject coin = hit.collider.gameObject;
-
-            if (!coin.activeSelf)
-                return;
 
             coin.SetActive(false);
 
