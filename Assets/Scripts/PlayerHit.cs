@@ -6,6 +6,7 @@ public class PlayerHit : MonoBehaviour
 {
 
     public TextMeshProUGUI scoreText;
+    public TextMeshProUGUI pauseScoreText;
     private RunnerController buzzrunner;
     private int score;
 
