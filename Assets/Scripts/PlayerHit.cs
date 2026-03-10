@@ -10,6 +10,11 @@ public class PlayerHit : MonoBehaviour
     private RunnerController buzzrunner;
     private int score;
 
+    [Header("Audio")]
+    public AudioSource sfxSource;        // Assign in Inspector
+    public AudioClip coinClip;
+    public AudioClip dogClip;
+
     void Start()
     {
         SetScore();
@@ -20,15 +25,17 @@ public class PlayerHit : MonoBehaviour
     {
         if (hit.collider.GetComponent<Obstacle>())
         {
-            
-            //Debug.Log("HIT - GAME OVER");
-            //Time.timeScale = 0f;
-            //SceneManager.LoadScene("EndMenu");
+           // Play obstacle hit SFX immediately
+            if (sfxSource != null && dogClip != null) // rename dogClip to obstacleClip if you like
+                sfxSource.PlayOneShot(dogClip);
+
             Debug.Log("Buzz ran into an obstacle");
-            buzzrunner.forwardSpeed = 1f; //when it bumps into an obstacle, it slows down a lot and the game likely ends
+            buzzrunner.forwardSpeed = 1f;
         }
         if (hit.collider.CompareTag("Coin"))
         {
+            if (sfxSource != null && coinClip != null)
+                sfxSource.PlayOneShot(coinClip);
             hit.collider.gameObject.GetComponent<Collider>().enabled = false;
             Destroy(hit.collider.gameObject);
             score++;

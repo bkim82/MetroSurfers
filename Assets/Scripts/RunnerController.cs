@@ -21,11 +21,23 @@ public class RunnerController : MonoBehaviour
     public float rollDuration = 0.7f;
     public float rollHeight = 1.0f;          // CharacterController height while rolling
 
+    [Header("Audio")]
+    public AudioSource musicSource;
+    public AudioSource runSource;
+    public AudioSource sfxSource;
+
+    public AudioClip backgroundMusic;
+    public AudioClip runningClip;
+
+    public AudioClip jumpClip;
+    public AudioClip rollClip;
+
     private CharacterController cc;
     private float originalHeight;
     private Vector3 originalCenter;
     private bool isRolling;
     private float rollTimer;
+    private bool jumpTriggered;
 
     public Transform visual;
     private Vector3 originalVisualScale;
@@ -36,6 +48,28 @@ public class RunnerController : MonoBehaviour
         originalVisualScale = visual.localScale;
         originalHeight = cc.height;
         originalCenter = cc.center;
+    }
+
+    void Start()
+    {
+
+        // Play Music
+        if (musicSource != null && backgroundMusic != null)
+        {
+            musicSource.clip = backgroundMusic;
+            musicSource.loop = true;
+            musicSource.Play();
+            Debug.Log("Background music Play() called");
+        }
+
+        // Play Running
+        if (runSource != null && runningClip != null)
+        {
+            runSource.clip = runningClip;
+            runSource.loop = true;
+            runSource.Play();
+            Debug.Log("Running sound Play() called");
+        }
     }
 
     void Update()
@@ -61,6 +95,20 @@ public class RunnerController : MonoBehaviour
         Vector3 motion = new Vector3(deltaX, verticalVelocity * Time.deltaTime, forwardSpeed * Time.deltaTime);
 
         cc.Move(motion);
+
+        if (jumpTriggered)
+        {
+            if (runSource != null && jumpClip != null)
+                runSource.PlayOneShot(jumpClip);
+
+            jumpTriggered = false; // reset
+        }
+
+        // Now pause/resume running loop
+        if (!cc.isGrounded)
+            runSource.Pause();
+        else if (!runSource.isPlaying)
+            runSource.Play();
     }
 
     void HandleInput()
@@ -80,6 +128,10 @@ public class RunnerController : MonoBehaviour
         if (jumpPressed && cc.isGrounded && !isRolling)
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
+
+            // Play jump sound immediately
+            if (sfxSource != null && jumpClip != null)
+                sfxSource.PlayOneShot(jumpClip);
         }
 
         // Roll / slide
@@ -94,6 +146,9 @@ public class RunnerController : MonoBehaviour
     {
         isRolling = true;
         rollTimer = rollDuration;
+
+        if (sfxSource != null && rollClip != null)
+            sfxSource.PlayOneShot(rollClip);
 
         cc.height = rollHeight;
         cc.center = new Vector3(originalCenter.x, rollHeight / 2f, originalCenter.z);
