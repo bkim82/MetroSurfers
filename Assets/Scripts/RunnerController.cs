@@ -35,6 +35,17 @@ public class RunnerController : MonoBehaviour
     public AudioClip jumpClip;
     public AudioClip rollClip;
 
+    [Header("Audio")]
+    public AudioSource musicSource;
+    public AudioSource runSource;
+    public AudioSource sfxSource;
+
+    public AudioClip backgroundMusic;
+    public AudioClip runningClip;
+
+    public AudioClip jumpClip;
+    public AudioClip rollClip;
+
     private CharacterController cc;
     private float originalHeight;
     private Vector3 originalCenter;
