@@ -4,13 +4,9 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class RunnerController : MonoBehaviour
 {
-    [Header("Forward")]
+    [Header("Movement")]
     public float forwardSpeed = 10f;
-
-    [Header("Lanes")]
-    public float laneOffset = 3f;            // lane x positions: -3, 0, +3
-    public float laneChangeSpeed = 12f;      // higher = snappier lane swap
-    private int laneIndex = 1;               // 0 left, 1 middle, 2 right
+    public float horizontalSpeed = 8f;
 
     [Header("Jump/Gravity")]
     public float jumpHeight = 2.2f;
@@ -19,7 +15,15 @@ public class RunnerController : MonoBehaviour
 
     [Header("Roll/Slide")]
     public float rollDuration = 0.7f;
-    public float rollHeight = 1.0f;          // CharacterController height while rolling
+    public float rollHeight = 1.0f;
+
+    [Header("Visual")]
+    public Transform visual;
+
+    [Header("Hit Reaction")]
+    public float hitSlowSpeed = 3f;
+    public float hitRecoverTime = 2f;
+    public float hitCooldown = 1f;
 
     [Header("Audio")]
     public AudioSource musicSource;
@@ -35,12 +39,17 @@ public class RunnerController : MonoBehaviour
     private CharacterController cc;
     private float originalHeight;
     private Vector3 originalCenter;
+    private Vector3 originalVisualScale;
+
     private bool isRolling;
     private float rollTimer;
     private bool jumpTriggered;
 
-    public Transform visual;
-    private Vector3 originalVisualScale;
+    private bool isHit;
+    private float hitTimer;
+
+    private bool canBeHit = true;
+    private float hitCooldownTimer;
 
     void Awake()
     {
@@ -76,23 +85,32 @@ public class RunnerController : MonoBehaviour
     {
         HandleInput();
         UpdateRoll();
+        UpdateHitState();
+        UpdateHitCooldown();
 
-        // Smoothly move toward target lane (position)
-        float targetX = (laneIndex - 1) * laneOffset;
-        float x = Mathf.Lerp(transform.position.x, targetX, Time.deltaTime * laneChangeSpeed);
+        var kb = Keyboard.current;
+        if (kb == null) return;
 
-        // Grounding
+        float horizontalInput = 0f;
+
+        if (kb.aKey.isPressed || kb.leftArrowKey.isPressed)
+            horizontalInput = -1f;
+        else if (kb.dKey.isPressed || kb.rightArrowKey.isPressed)
+            horizontalInput = 1f;
+
         if (cc.isGrounded && verticalVelocity < 0f)
             verticalVelocity = -2f;
 
-        // Gravity (verticalVelocity is a velocity)
         verticalVelocity += gravity * Time.deltaTime;
 
-        // Move this frame:
-        // - X uses delta position (already per-frame)
-        // - Y/Z use velocities * dt
-        float deltaX = x - transform.position.x;
-        Vector3 motion = new Vector3(deltaX, verticalVelocity * Time.deltaTime, forwardSpeed * Time.deltaTime);
+        float currentForwardSpeed = isHit ? hitSlowSpeed : forwardSpeed;
+        float zMove = currentForwardSpeed * Time.deltaTime;
+
+        Vector3 motion = new Vector3(
+            horizontalInput * horizontalSpeed * Time.deltaTime,
+            verticalVelocity * Time.deltaTime,
+            zMove
+        );
 
         cc.Move(motion);
 
@@ -116,14 +134,6 @@ public class RunnerController : MonoBehaviour
         var kb = Keyboard.current;
         if (kb == null) return;
 
-        // Lane change
-        if (kb.aKey.wasPressedThisFrame || kb.leftArrowKey.wasPressedThisFrame)
-            laneIndex = Mathf.Max(0, laneIndex - 1);
-
-        if (kb.dKey.wasPressedThisFrame || kb.rightArrowKey.wasPressedThisFrame)
-            laneIndex = Mathf.Min(2, laneIndex + 1);
-
-        // Jump
         bool jumpPressed = kb.spaceKey.wasPressedThisFrame || kb.wKey.wasPressedThisFrame || kb.upArrowKey.wasPressedThisFrame;
         if (jumpPressed && cc.isGrounded && !isRolling)
         {
@@ -134,7 +144,6 @@ public class RunnerController : MonoBehaviour
                 sfxSource.PlayOneShot(jumpClip);
         }
 
-        // Roll / slide
         bool rollPressed = kb.sKey.wasPressedThisFrame || kb.downArrowKey.wasPressedThisFrame;
         if (rollPressed && !isRolling)
         {
@@ -154,9 +163,9 @@ public class RunnerController : MonoBehaviour
         cc.center = new Vector3(originalCenter.x, rollHeight / 2f, originalCenter.z);
 
         visual.localScale = new Vector3(
-            visual.localScale.x,
-            visual.localScale.y / 4f,
-            visual.localScale.z
+            originalVisualScale.x,
+            originalVisualScale.y / 4f,
+            originalVisualScale.z
         );
     }
 
@@ -175,5 +184,43 @@ public class RunnerController : MonoBehaviour
             cc.center = originalCenter;
             visual.localScale = originalVisualScale;
         }
+    }
+
+    void UpdateHitState()
+    {
+        if (!isHit)
+            return;
+
+        hitTimer -= Time.deltaTime;
+
+        if (hitTimer <= 0f)
+        {
+            isHit = false;
+        }
+    }
+
+    void UpdateHitCooldown()
+    {
+        if (canBeHit)
+            return;
+
+        hitCooldownTimer -= Time.deltaTime;
+
+        if (hitCooldownTimer <= 0f)
+        {
+            canBeHit = true;
+        }
+    }
+
+    public void OnHitObstacle()
+    {
+        if (!canBeHit)
+            return;
+
+        canBeHit = false;
+        hitCooldownTimer = hitCooldown;
+
+        isHit = true;
+        hitTimer = hitRecoverTime;
     }
 }
