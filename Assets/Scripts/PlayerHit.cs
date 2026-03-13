@@ -38,6 +38,7 @@ public class PlayerHit : MonoBehaviour
                 score -= gate.cost;
                 SetScore();
                 Destroy(hit.collider.gameObject);
+                SceneManager.LoadScene("Level2");
             }
 
             return;
