@@ -6,6 +6,7 @@ public class PlayerHit : MonoBehaviour
 {
     public TextMeshProUGUI scoreText;
     public TextMeshProUGUI pauseScoreText;
+    public GameObject coinWall;
 
     private RunnerController buzzrunner;
     private int score;
@@ -21,48 +22,68 @@ public class PlayerHit : MonoBehaviour
         SetScore();
     }
 
-    void OnControllerColliderHit(ControllerColliderHit hit)
-    {
-        // OBSTACLE HIT
-        if (hit.collider.GetComponent<Obstacle>())
-        {
-           // Play obstacle hit SFX immediately
-            if (sfxSource != null && dogClip != null)
-                sfxSource.PlayOneShot(dogClip);
-
-            Debug.Log("Buzz ran into an obstacle");
-
-            // Trigger slowdown + recovery logic
-            buzzrunner.OnHitObstacle();
-
-            // Disable obstacle so it doesn't trigger again
-            hit.collider.enabled = false;
-        }
-
-        // COIN
-        if (hit.collider.CompareTag("Coin"))
-        {
-            if (sfxSource != null && coinClip != null)
-                sfxSource.PlayOneShot(coinClip);
-            hit.collider.gameObject.GetComponent<Collider>().enabled = false;
-            Destroy(hit.collider.gameObject);
-
-            score++;
-            SetScore();
-        }
-
-        // BULLDOG
-        if (hit.collider.CompareTag("Bulldog"))
-        {
-            Debug.Log("Bulldog caught Buzz");
-
-            Time.timeScale = 0f;
-            SceneManager.LoadScene("EndMenu");
-        }
-    }
-
     void SetScore()
     {
         scoreText.text = "Score: " + score.ToString();
+    }
+
+    void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        CoinGate gate = hit.collider.GetComponent<CoinGate>();
+
+        if (gate != null)
+        {
+            if (score >= gate.cost)
+            {
+                score -= gate.cost;
+                SetScore();
+                Destroy(hit.collider.gameObject);
+            }
+
+            return;
+        }
+
+        if (hit.collider.GetComponent<Obstacle>())
+        {
+           // Play obstacle hit SFX immediately
+            if (sfxSource != null && dogClip != null) // rename dogClip to obstacleClip if you like
+                sfxSource.PlayOneShot(dogClip);
+
+            Debug.Log("Buzz ran into an obstacle");
+            buzzrunner.OnHitObstacle();
+        }
+
+        if (hit.collider.CompareTag("Coin"))
+        {
+            GameObject coin = hit.collider.gameObject;
+
+            if (!coin.activeSelf)
+                return;
+
+            if (sfxSource != null && coinClip != null)
+                sfxSource.PlayOneShot(coinClip);
+
+            coin.SetActive(false);
+
+            score++;
+            SetScore();
+
+            Destroy(coin);
+        }
+
+        if (hit.collider.CompareTag("Bulldog"))
+        {
+            Debug.Log("Bulldog caught Buzz");
+            BulldogAI uga = hit.collider.GetComponent<BulldogAI>();
+            uga.currentstate = BulldogAI.state.celebrate;
+            buzzrunner.enabled = false;
+            Invoke("End", 2f); //waiting 3 sec to stop game
+
+        }
+    }
+    void End()
+    {
+        Time.timeScale = 0f;
+        SceneManager.LoadScene("EndMenu");
     }
 }

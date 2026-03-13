@@ -23,6 +23,7 @@ public class RunnerController : MonoBehaviour
     [Header("Hit Reaction")]
     public float hitSlowSpeed = 3f;
     public float hitRecoverTime = 2f;
+    public float hitCooldown = 1f;
 
     [Header("Audio")]
     public AudioSource musicSource;
@@ -57,6 +58,9 @@ public class RunnerController : MonoBehaviour
 
     private bool isHit;
     private float hitTimer;
+
+    private bool canBeHit = true;
+    private float hitCooldownTimer;
 
     void Awake()
     {
@@ -93,6 +97,7 @@ public class RunnerController : MonoBehaviour
         HandleInput();
         UpdateRoll();
         UpdateHitState();
+        UpdateHitCooldown();
 
         var kb = Keyboard.current;
         if (kb == null) return;
@@ -205,8 +210,27 @@ public class RunnerController : MonoBehaviour
         }
     }
 
+    void UpdateHitCooldown()
+    {
+        if (canBeHit)
+            return;
+
+        hitCooldownTimer -= Time.deltaTime;
+
+        if (hitCooldownTimer <= 0f)
+        {
+            canBeHit = true;
+        }
+    }
+
     public void OnHitObstacle()
     {
+        if (!canBeHit)
+            return;
+
+        canBeHit = false;
+        hitCooldownTimer = hitCooldown;
+
         isHit = true;
         hitTimer = hitRecoverTime;
     }
