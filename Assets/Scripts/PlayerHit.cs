@@ -74,8 +74,16 @@ public class PlayerHit : MonoBehaviour
         if (hit.collider.CompareTag("Bulldog"))
         {
             Debug.Log("Bulldog caught Buzz");
-            Time.timeScale = 0f;
-            SceneManager.LoadScene("EndMenu");
+            BulldogAI uga = hit.collider.GetComponent<BulldogAI>();
+            uga.currentstate = BulldogAI.state.celebrate;
+            buzzrunner.enabled = false;
+            Invoke("End", 2f); //waiting 3 sec to stop game
+
         }
+    }
+    void End()
+    {
+        Time.timeScale = 0f;
+        SceneManager.LoadScene("EndMenu");
     }
 }
