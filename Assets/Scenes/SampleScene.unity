@@ -1288,6 +1288,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buzz: {fileID: 1201311817}
+  currentstate: 0
 --- !u!136 &500419820
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -4098,7 +4099,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_SerializedVersion: 0
   m_AgentTypeID: -1372625422
-  m_CollectObjects: 0
+  m_CollectObjects: 2
   m_Size: {x: 10, y: 10, z: 10}
   m_Center: {x: 0, y: 2, z: 0}
   m_LayerMask:
@@ -4114,7 +4115,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 317f7aa36a47449e0ae80f561bf04bf2, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 37e2658fcae294d1a8e662d1713f5990, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1001 &1879640356
 PrefabInstance:
