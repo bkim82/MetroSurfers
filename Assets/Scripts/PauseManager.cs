@@ -42,7 +42,6 @@ public class PauseManager : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1f;
         pausePanel.SetActive(false);
-        // Resume music
         if (musicSource != null)
             musicSource.UnPause();
     }

@@ -119,10 +119,9 @@ public class RunnerController : MonoBehaviour
             if (runSource != null && jumpClip != null)
                 runSource.PlayOneShot(jumpClip);
 
-            jumpTriggered = false; // reset
+            jumpTriggered = false;
         }
 
-        // Now pause/resume running loop
         if (!cc.isGrounded)
             runSource.Pause();
         else if (!runSource.isPlaying)
@@ -139,7 +138,6 @@ public class RunnerController : MonoBehaviour
         {
             verticalVelocity = Mathf.Sqrt(jumpHeight * -2f * gravity);
 
-            // Play jump sound immediately
             if (sfxSource != null && jumpClip != null)
                 sfxSource.PlayOneShot(jumpClip);
         }

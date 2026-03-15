@@ -12,7 +12,7 @@ public class PlayerHit : MonoBehaviour
     private int score;
 
     [Header("Audio")]
-    public AudioSource sfxSource;        // Assign in Inspector
+    public AudioSource sfxSource;
     public AudioClip coinClip;
     public AudioClip dogClip;
 
@@ -46,8 +46,7 @@ public class PlayerHit : MonoBehaviour
 
         if (hit.collider.GetComponent<Obstacle>())
         {
-           // Play obstacle hit SFX immediately
-            if (sfxSource != null && dogClip != null) // rename dogClip to obstacleClip if you like
+            if (sfxSource != null && dogClip != null)
                 sfxSource.PlayOneShot(dogClip);
 
             Debug.Log("Buzz ran into an obstacle");
