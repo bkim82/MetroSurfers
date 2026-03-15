@@ -77,7 +77,7 @@ public class PlayerHit : MonoBehaviour
             BulldogAI uga = hit.collider.GetComponent<BulldogAI>();
             uga.currentstate = BulldogAI.state.celebrate;
             buzzrunner.enabled = false;
-            Invoke("End", 2f); //waiting 3 sec to stop game
+            Invoke("End", 2f);
 
         }
     }

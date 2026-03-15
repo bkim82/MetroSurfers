@@ -62,7 +62,6 @@ public class RunnerController : MonoBehaviour
     void Start()
     {
 
-        // Play Music
         if (musicSource != null && backgroundMusic != null)
         {
             musicSource.clip = backgroundMusic;
@@ -71,7 +70,6 @@ public class RunnerController : MonoBehaviour
             Debug.Log("Background music Play() called");
         }
 
-        // Play Running
         if (runSource != null && runningClip != null)
         {
             runSource.clip = runningClip;
