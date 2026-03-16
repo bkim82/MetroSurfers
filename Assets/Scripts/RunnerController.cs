@@ -4,28 +4,17 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(CharacterController))]
 public class RunnerController : MonoBehaviour
 {
-    [Header("Movement")]
     public float forwardSpeed = 10f;
     public float horizontalSpeed = 8f;
-
-    [Header("Jump/Gravity")]
     public float jumpHeight = 2.2f;
     public float gravity = -25f;
     private float verticalVelocity;
-
-    [Header("Roll/Slide")]
     public float rollDuration = 0.7f;
     public float rollHeight = 1.0f;
-
-    [Header("Visual")]
     public Transform visual;
-
-    [Header("Hit Reaction")]
     public float hitSlowSpeed = 3f;
     public float hitRecoverTime = 2f;
     public float hitCooldown = 1f;
-
-    [Header("Audio")]
     public AudioSource musicSource;
     public AudioSource runSource;
     public AudioSource sfxSource;

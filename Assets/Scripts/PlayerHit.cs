@@ -10,8 +10,6 @@ public class PlayerHit : MonoBehaviour
 
     private RunnerController buzzrunner;
     private int score;
-
-    [Header("Audio")]
     public AudioSource sfxSource;
     public AudioClip coinClip;
     public AudioClip dogClip;
