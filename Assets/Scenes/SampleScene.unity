@@ -2560,7 +2560,7 @@ MonoBehaviour:
   gravity: -25
   rollDuration: 0.7
   rollHeight: 0.5
-  visual: {fileID: 2018262278}
+  visual: {fileID: 217902276}
   hitSlowSpeed: 3
   hitRecoverTime: 2
   hitCooldown: 1
