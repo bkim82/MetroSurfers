@@ -425,6 +425,14 @@ PrefabInstance:
       propertyPath: 'm_Animations.Array.data[3]'
       value: 
       objectReference: {fileID: 7400000, guid: 12c56d916610f48db840d44692c36998, type: 2}
+    - target: {fileID: 8914207829204841315, guid: 05fc98da619024ef8bbd130dbb12b374, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 2f72adc813a424aa09212efa874f7f0e, type: 2}
+    - target: {fileID: 8914207829204841315, guid: 05fc98da619024ef8bbd130dbb12b374, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

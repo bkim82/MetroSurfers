@@ -39,6 +39,7 @@ public class RunnerController : MonoBehaviour
 
     private bool canBeHit = true;
     private float hitCooldownTimer;
+    Animator anim;
 
     void Awake()
     {
@@ -50,7 +51,15 @@ public class RunnerController : MonoBehaviour
 
     void Start()
     {
-
+        anim = GetComponentInChildren<Animator>();
+        if (anim == null)
+    {
+        Debug.Log("Animator NOT FOUND");
+    }
+    else
+    {
+        Debug.Log("Animator FOUND");
+    }
         if (musicSource != null && backgroundMusic != null)
         {
             musicSource.clip = backgroundMusic;
@@ -127,6 +136,8 @@ public class RunnerController : MonoBehaviour
 
             if (sfxSource != null && jumpClip != null)
                 sfxSource.PlayOneShot(jumpClip);
+
+            anim.SetTrigger("Jump");
         }
 
         bool rollPressed = kb.sKey.wasPressedThisFrame || kb.downArrowKey.wasPressedThisFrame;
