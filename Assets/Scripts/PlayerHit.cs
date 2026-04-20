@@ -36,7 +36,16 @@ public class PlayerHit : MonoBehaviour
                 score -= gate.cost;
                 SetScore();
                 Destroy(hit.collider.gameObject);
-                SceneManager.LoadScene("Level2");
+                string currentScene = SceneManager.GetActiveScene().name;
+                if (currentScene == "SampleScene") { //this is the scene changing logic for when buzz reaches finish and has enough coins
+                    SceneManager.LoadScene("Level2");
+                } else if (currentScene == "Level2")
+                {
+                    SceneManager.LoadScene("Level3");
+                } else if (currentScene == "Level3")
+                {
+                    SceneManager.LoadScene("EndMenu");                    
+                }
             }
 
             return;
