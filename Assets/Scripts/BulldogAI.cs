@@ -19,7 +19,7 @@ public class BulldogAI : MonoBehaviour
     [Header("Jump Settings")]
     public float obstacleCheckDistance = 2.5f;
     public float baseJumpHeightBuffer = 1.0f;
-    public float baseLandingBuffer = 2.0f;
+    public float baseLandingBuffer = 4.0f;
     public float jumpDuration = 0.8f;
 
     private bool isJumping = false;
