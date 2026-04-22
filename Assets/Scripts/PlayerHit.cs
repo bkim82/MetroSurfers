@@ -44,7 +44,7 @@ public class PlayerHit : MonoBehaviour
                     SceneManager.LoadScene("Level3");
                 } else if (currentScene == "Level3")
                 {
-                    SceneManager.LoadScene("EndMenu");                    
+                    SceneManager.LoadScene("WinMenu");                    
                 }
             }
 

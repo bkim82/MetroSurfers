@@ -1769,6 +1769,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buzz: {fileID: 1201311817}
   currentstate: 0
+  obstacleCheckDistance: 2.5
+  baseJumpHeightBuffer: 1
+  baseLandingBuffer: 2
+  jumpDuration: 0.8
 --- !u!136 &500419820
 CapsuleCollider:
   m_ObjectHideFlags: 0

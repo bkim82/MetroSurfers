@@ -1502,6 +1502,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buzz: {fileID: 1201311817}
   currentstate: 0
+  obstacleCheckDistance: 2.5
+  baseJumpHeightBuffer: 1
+  baseLandingBuffer: 2
+  jumpDuration: 0.8
 --- !u!136 &500419820
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2971,7 +2975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 775bb4357723c4cff913554fd57d346e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardSpeed: 13
+  forwardSpeed: 11
   horizontalSpeed: 8
   jumpHeight: 2.2
   gravity: -25
@@ -6327,7 +6331,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7810888303011553231, guid: 8ce4b61f948b5449182222ded7062269, type: 3}
       propertyPath: cost
-      value: 15
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 8625820623074824029, guid: 8ce4b61f948b5449182222ded7062269, type: 3}
       propertyPath: m_Name
@@ -6335,7 +6339,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8749372033614161591, guid: 8ce4b61f948b5449182222ded7062269, type: 3}
       propertyPath: m_text
-      value: "15\n COINS"
+      value: "10\n COINS"
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1297,6 +1297,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buzz: {fileID: 1201311817}
   currentstate: 0
+  obstacleCheckDistance: 1.5
+  baseJumpHeightBuffer: 1
+  baseLandingBuffer: 2
+  jumpDuration: 0.5
 --- !u!136 &500419820
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -5283,7 +5287,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9181183196227933983, guid: 4153bf060abf248c28909be6c153f663, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.16
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 9181183196227933983, guid: 4153bf060abf248c28909be6c153f663, type: 3}
       propertyPath: m_LocalPosition.z
